@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../dist/assets/index-5b8ae4e8.css';
+import './index.css';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -17,6 +17,27 @@ function App() {
   useEffect(() => {
     fetchCards();
   }, []);
+
+  const calculateTotalInterestPaid = (balance, apr, paymentAmount, periods) => {
+    let totalInterestPaid = 0;
+    let remainingBalance = parseFloat(balance);
+    let monthlyRate = apr / 100 / 12;
+  
+    for (let i = 0; i < periods; i++) {
+      let interestPayment = remainingBalance * monthlyRate;
+      let principalPayment = paymentAmount - interestPayment;
+  
+      if (principalPayment > remainingBalance) {
+        principalPayment = remainingBalance;
+        interestPayment = 0;
+      }
+  
+      totalInterestPaid += interestPayment;
+      remainingBalance -= principalPayment;
+    }
+  
+    return totalInterestPaid;
+  };  
 
   const fetchCards = async () => {
     const response = await axios.get('https://credit-card-manager-backend.onrender.com/cards');
@@ -107,18 +128,20 @@ function App() {
       <button onClick={() => deleteCard(card._id)} className="ml-4 text-red-500">Delete</button>
       </div>
       <div className="block">
-        <input
-          type="text"
-          placeholder="Payment Amount"
-          onChange={(e) => setPaymentAmount(e.target.value)}
-          onKeyUp={() => fetchCards()}
-          className="border p-2 mr-2"
-        /><br/> <p className="ml-4 mt-3 pt-3">Hypothetical Payoff Periods: {calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmount) || 0)} months
-      </p><br/>
-      
-      </div>
-    </li>
-  ))}
+  <input
+    type="text"
+    placeholder="Payment Amount"
+    onChange={(e) => setPaymentAmount(e.target.value)}
+    onKeyUp={() => fetchCards()}
+    className="border p-2 mr-2"
+  /><br/>
+  <p className="ml-4 mt-3 pt-3">Hypothetical Payoff Periods: {calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmount) || 0)} months
+  </p>
+  <p className="ml-4 mt-3 pt-3">Total Interest Paid: ${calculateTotalInterestPaid(card.balance, card.apr, parseFloat(paymentAmount) || 0, calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmount) || 0)).toFixed(2)}
+  </p><br/>
+</div>
+  </li>
+))}
 </ul>
 </div>
 
