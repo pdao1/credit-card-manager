@@ -19,17 +19,17 @@ function App() {
   }, []);
 
   const fetchCards = async () => {
-    const response = await axios.get('http://localhost:3000/cards');
+    const response = await axios.get('https://credit-card-manager-backend.onrender.com/cards');
     setCards(response.data);
   };
 
   const addCard = async () => {
-    await axios.post('http://localhost:3000/add', { name, balance, apr });
+    await axios.post('https://credit-card-manager-backend.onrender.com/add', { name, balance, apr });
     fetchCards();
   };
 
   const editCard = async () => {
-    await axios.put(`http://localhost:3000/edit/${editCardId}`, {
+    await axios.put(`https://credit-card-manager-backend.onrender.com/edit/${editCardId}`, {
       name: editName,
       balance: editBalance,
       apr: editApr
@@ -41,7 +41,7 @@ function App() {
   const deleteCard = async (cardId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this card?");
     if (confirmDelete) {
-      await axios.delete(`http://localhost:3000/delete/${cardId}`);
+      await axios.delete(`https://credit-card-manager-backend.onrender.com/delete/${cardId}`);
       fetchCards();
     }
   };
@@ -59,7 +59,7 @@ function App() {
     }
   
     if (months >= maxIterations) {
-      return "Calculation not feasible within reasonable time";
+      return "infinity";
     }
     
     return months;
@@ -68,7 +68,7 @@ function App() {
 
   const addPayment = async (cardId, currentBalance) => {
     const newBalance = currentBalance - paymentAmount;
-    await axios.put(`http://localhost:3000/edit/${cardId}`, {
+    await axios.put(`https://credit-card-manager-backend.onrender.com/edit/${cardId}`, {
       balance: newBalance
     });
     fetchCards();
@@ -82,7 +82,7 @@ function App() {
   };
   
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-2 p-4">
       <div className="container" id="add-card">
       <h1 className="text-4xl mb-4">Credit Card Tracker</h1>
       {/* Add New Card Form */}
@@ -90,48 +90,47 @@ function App() {
        <div className="col"> <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} className="border p-2 m-4" /></div>
        <div className="col"> <input type="text" placeholder="Balance" onChange={(e) => setBalance(e.target.value)} className="border p-2 m-4" /></div>
        <div className="col"> <input type="text" placeholder="APR" onChange={(e) => setApr(e.target.value)} className="border p-2 m-4" /></div>
-        <button onClick={addCard} className="bg-blue-500 text-white p-2 rounded">Add Card</button>
+        <button onClick={addCard} className="bg-blue-500 text-white text-center rounded">Add Card</button>
       </div>  
     </div>
 
   <ul>
     
   {cards.map((card) => (
-    <li key={card._id}>
-      {card.name} - {card.balance} - {card.apr}%
+    <li key={card._id} className="cards">
+      <strong>{card.name}</strong><br/>
+      Balance: ${card.balance}<br/>
+      {card.apr}%
+      <div className="container pt-3 mt-3 mb-3">
       <button onClick={() => setEditCardId(card._id)} className="ml-4 text-blue-500">Edit</button>
       <button onClick={() => addPayment(card._id, card.balance)} className="ml-4 text-green-500">Make Payment</button>
       <button onClick={() => deleteCard(card._id)} className="ml-4 text-red-500">Delete</button>
-      
-      <div className="inline-block">
+      </div>
+      <div className="block">
         <input
           type="text"
           placeholder="Payment Amount"
           onChange={(e) => setPaymentAmount(e.target.value)}
           onKeyUp={() => fetchCards()}
           className="border p-2 mr-2"
-        /><br/>
-        <span className="ml-4">
-          Hypothetical Payoff Periods: {calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmount) || 0)} months
-        </span>
+        /><br/> <p className="ml-4 mt-3 pt-3">Hypothetical Payoff Periods: {calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmount) || 0)} months
+      </p><br/>
+      
       </div>
     </li>
   ))}
 </ul>
-
-
-
       {/* Display Payment Log */}
-      <div>
+      <div className="container log">
         <h2>Payment Log</h2>
         {Object.keys(paymentLog).map((cardId) => (
-          <div key={cardId}>
+          <div key={cardId} className="logItemName">
             <h3>{cards.find((card) => card._id === cardId)?.name}</h3>
-            <ul>
+       
               {paymentLog[cardId].map((log, index) => (
-                <li key={index}>{log}</li>
+                <li key={index} className="logItem">{log}</li>
               ))}
-            </ul>
+         
           </div>
         ))}
       </div>
