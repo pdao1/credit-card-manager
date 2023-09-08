@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css';
+import '../dist/assets/index-5b8ae4e8.css';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -93,8 +93,8 @@ function App() {
         <button onClick={addCard} className="bg-blue-500 text-white text-center rounded">Add Card</button>
       </div>  
     </div>
-
-  <ul>
+<div className="container cards mx-auto">
+    <ul>
     
   {cards.map((card) => (
     <li key={card._id} className="cards">
@@ -120,6 +120,8 @@ function App() {
     </li>
   ))}
 </ul>
+</div>
+
       {/* Display Payment Log */}
       <div className="container log">
         <h2>Payment Log</h2>
