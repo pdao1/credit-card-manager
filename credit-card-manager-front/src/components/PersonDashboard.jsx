@@ -38,19 +38,19 @@ const PersonDashboard = () => {
   
     return totalInterestPaid;
   };  
-
   const fetchCards = async () => {
-    const response = await axios.get('https://credit-card-manager-backend.onrender.com/cards');
+    const response = await axios.get(`https://credit-card-manager-backend.onrender.com/${person}/cards`);
     setCards(response.data);
   };
-
+  
   const addCard = async () => {
-    await axios.post('https://credit-card-manager-backend.onrender.com/add', { name, balance, apr });
+    await axios.post(`https://credit-card-manager-backend.onrender.com/${person}/add`, { person, name, balance, apr });
     fetchCards();
   };
-
+  
   const editCard = async () => {
-    await axios.put(`https://credit-card-manager-backend.onrender.com/edit/${editCardId}`, {
+    await axios.put(`https://credit-card-manager-backend.onrender.com/${person}/edit/${editCardId}`, {
+      person,
       name: editName,
       balance: editBalance,
       apr: editApr
@@ -58,15 +58,35 @@ const PersonDashboard = () => {
     setEditCardId(null);
     fetchCards();
   };
-
+  
   const deleteCard = async (cardId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this card?");
     if (confirmDelete) {
-      await axios.delete(`https://credit-card-manager-backend.onrender.com/delete/${cardId}`);
+      await axios.delete(`https://credit-card-manager-backend.onrender.com/${person}/delete/${cardId}`);
       fetchCards();
     }
   };
-
+  
+  const addPayment = async (cardId, currentBalance) => {
+    const newBalance = currentBalance - paymentAmount;
+    await axios.post(`https://credit-card-manager-backend.onrender.com/${person}/payment/${cardId}`, {
+      balance: newBalance
+    });
+    fetchCards();
+  
+    // Update payment log
+    if (!paymentLog[cardId]) {
+      paymentLog[cardId] = [];
+    }
+    paymentLog[cardId].push(`Paid ${paymentAmount}, New balance: ${newBalance}`);
+    setPaymentLog({ ...paymentLog });
+  };
+  
+  // Fetch cards when the component mounts or the person changes
+  useEffect(() => {
+    fetchCards();  // Call the existing function directly
+  }, [person, fetchCards]);  
+0
   const calculatePayoffPeriods = (balance, apr, payment) => {
     let months = 0;
     let remainingBalance = balance;
@@ -85,32 +105,8 @@ const PersonDashboard = () => {
     
     return months;
   };
-  
 
-  const addPayment = async (cardId, currentBalance) => {
-    const newBalance = currentBalance - paymentAmount;
-    await axios.put(`https://credit-card-manager-backend.onrender.com/edit/${cardId}`, {
-      balance: newBalance
-    });
-    fetchCards();
 
-    // Update payment log
-    if (!paymentLog[cardId]) {
-      paymentLog[cardId] = [];
-    }
-    paymentLog[cardId].push(`Paid ${paymentAmount}, New balance: ${newBalance}`);
-    setPaymentLog({ ...paymentLog });
-  };
-  useEffect(() => {
-    // Update your fetchCards() to use `person`
-    const fetchCards = async () => {
-      const response = await axios.get(`https://credit-card-manager-backend.onrender.com/cards/person/${person}`);
-      setCards(response.data);
-    };
-
-    fetchCards();
-  }, [person]);
-  
   return (
     <div className="container mx-2 p-4">
       <div className="container my-2 py-2" id="add-card">
