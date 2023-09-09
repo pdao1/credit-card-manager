@@ -16,7 +16,6 @@ const PersonDashboard = () => {
   const [editApr, setEditApr] = useState('');
   const [paymentAmount, setPaymentAmount] = useState('');
   const [paymentLog, setPaymentLog] = useState({});
-  const [paymentAmounts, setPaymentAmounts] = useState({});
 
 
   const calculateTotalInterestPaid = (balance, apr, paymentAmount, periods) => {
@@ -39,14 +38,6 @@ const PersonDashboard = () => {
   
     return totalInterestPaid;
   };  
-
-  const handlePaymentAmountChange = (cardId, amount) => {
-    setPaymentAmounts({
-      ...paymentAmounts,
-      [cardId]: amount
-    });
-  };
-  
   const fetchCards = useCallback(async () => {
     const response = await axios.get(`https://credit-card-manager-backend.onrender.com/${person}/cards`);
     setCards(response.data);
@@ -169,13 +160,14 @@ const PersonDashboard = () => {
   </div>
   
   <div className="block">
-  <input
-  type="text"
-  placeholder="Payment Amount"
-  onChange={(e) => handlePaymentAmountChange(card._id, e.target.value)}
-  className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl"
-/><br/>
-  <p className="ml-4 mt-2 pt-2">Payoff Periods: {calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmounts) || 0)} months
+    <input
+    type="text"
+    placeholder="Payment Amount"
+    onChange={(e) => setPaymentAmount(e.target.value)}
+    onKeyUp={() => fetchCards()}
+    className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl"
+  /><br/>
+  <p className="ml-4 mt-2 pt-2">Payoff Periods: {calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmount) || 0)} months
   </p>
   <p className="ml-4 mt-1 pt-1">Total Interest Paid: ${calculateTotalInterestPaid(card.balance, card.apr, parseFloat(paymentAmount) || 0, calculatePayoffPeriods(card.balance, card.apr, parseFloat(paymentAmount) || 0)).toFixed(2)}
   </p><br/>
