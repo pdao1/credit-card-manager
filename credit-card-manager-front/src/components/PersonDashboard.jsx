@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../index.css';
 // ... other imports
-import { ChromePicker } from 'react-color';  // import a color picker, you can install it via npm
 
 const PersonDashboard = () => {
   const { person } = useParams();  // Get the person from the URL
@@ -42,48 +41,70 @@ const PersonDashboard = () => {
     return totalInterestPaid;
   };  
   const fetchCards = useCallback(async () => {
-    const response = await axios.get(`https://credit-card-manager-backend.onrender.com/${person}/cards`);
-    setCards(response.data);
+    try {
+      const response = await axios.get(`https://credit-card-manager-backend.onrender.com/${person}/cards`);
+      console.log("Received data from API:", response.data);
+      if (Array.isArray(response.data)) {
+        setCards(response.data);
+      } else {
+        console.error("Received data is not an array:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching cards:", error);
+    }
   }, [person]);
   
   const addCard = async () => {
-    await axios.post(`https://credit-card-manager-backend.onrender.com/${person}/add`, { person, name, balance, apr });
-    fetchCards();
+    try {
+      await axios.post(`https://credit-card-manager-backend.onrender.com/${person}/add`, { person, name, balance, apr, cardColor });
+      fetchCards();
+    } catch (error) {
+      console.error("Error adding card:", error);
+    }
   };
   
   const editCard = async () => {
-    await axios.put(`https://credit-card-manager-backend.onrender.com/${person}/edit/${editCardId}`, {
-      person,
-      name: editName,
-      balance: editBalance,
-      apr: editApr,
-      cardColor: editCardColor  // include cardColor
-    });
-    setEditCardId(null);
-    fetchCards();
+    try {
+      await axios.put(`https://credit-card-manager-backend.onrender.com/${person}/edit/${editCardId}`, {
+        person,
+        name: editName,
+        balance: editBalance,
+        apr: editApr,
+        cardColor: editCardColor
+      });
+      setEditCardId(null);
+      fetchCards();
+    } catch (error) {
+      console.error("Error editing card:", error);
+    }
   };
   
   const deleteCard = async (cardId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this card?");
     if (confirmDelete) {
-      await axios.delete(`https://credit-card-manager-backend.onrender.com/${person}/delete/${cardId}`);
-      fetchCards();
+      try {
+        await axios.delete(`https://credit-card-manager-backend.onrender.com/${person}/delete/${cardId}`);
+        fetchCards();
+      } catch (error) {
+        console.error("Error deleting card:", error);
+      }
     }
   };
   
   const addPayment = async (cardId, currentBalance) => {
-    const newBalance = currentBalance - paymentAmount;
-    await axios.post(`https://credit-card-manager-backend.onrender.com/${person}/payment/${cardId}`, {
-      balance: newBalance
-    });
-    fetchCards();
-  
-    // Update payment log
-    if (!paymentLog[cardId]) {
-      paymentLog[cardId] = [];
+    try {
+      const newBalance = currentBalance - paymentAmount;
+      await axios.post(`https://credit-card-manager-backend.onrender.com/${person}/payment/${cardId}`, { balance: newBalance });
+      fetchCards();
+      const newPaymentLog = { ...paymentLog };
+      if (!newPaymentLog[cardId]) {
+        newPaymentLog[cardId] = [];
+      }
+      newPaymentLog[cardId].push(`Paid ${paymentAmount}, New balance: ${newBalance}`);
+      setPaymentLog(newPaymentLog);
+    } catch (error) {
+      console.error("Error making payment:", error);
     }
-    paymentLog[cardId].push(`Paid ${paymentAmount}, New balance: ${newBalance}`);
-    setPaymentLog({ ...paymentLog });
   };
   
   // Fetch cards when the component mounts or the person changes
@@ -110,9 +131,7 @@ const PersonDashboard = () => {
     return months;
   };
 
-  const handleColorChange = (color) => {
-    setCardColor(color.hex);
-  };
+
 
   return (
     <div className="container mx-2 p-4">

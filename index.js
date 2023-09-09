@@ -23,13 +23,13 @@ app.use(
   })
 );
 
-// To serve the static files from React app
-app.use(express.static(path.join(__dirname, './credit-card-manager-front/dist')));
+// // To serve the static files from React app
+// app.use(express.static(path.join(__dirname, './credit-card-manager-front/dist')));
 
-// Serve the index.html for all routes for React Router to take over
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './credit-card-manager-front/dist', 'index.html'));
-});
+// // Serve the index.html for all routes for React Router to take over
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, './credit-card-manager-front/dist', 'index.html'));
+// });
 
 
 
@@ -64,7 +64,7 @@ const CreditCardSchema = new mongoose.Schema({
   name: String,
   balance: Number,
   apr: Number,
-  cardColor: String
+  cardColor: String,
 });
 
 const CreditCard = mongoose.model('CreditCard', CreditCardSchema);
