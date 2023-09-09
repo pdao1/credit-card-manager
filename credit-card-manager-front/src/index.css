@@ -1384,5 +1384,40 @@ li.cards {
   backdrop-filter: none!important;
 }
 .card.mx-auto.w-100.glass.mb-6.drop-shadow-lg.border-gray {
-  max-width: 720px;
+    background-color: #f1f5f7;
+    max-width:680px;
+}
+.card-body {
+  display: inline;
+  flex-direction: column;
+  align-items: flex-start; /* aligns horizontally from the start */
+  justify-content: center; /* aligns vertically in the center */
+}
+
+.credit-card-chip {
+  position: absolute;
+  left: 16%;
+  top: 40%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  border: 1.5px solid #B38F00;
+  z-index: -10;
+  border-radius: 8px;
+}
+
+.chip-row {
+  display: flex;
+}
+
+.chip-cell {
+  width: 18px;
+  height: 12px;
+  background-color: #e9c32b;
+  margin: 1px;
+}
+
+/* alternate cells for effect */
+.chip-row:nth-child(even) .chip-cell:nth-child(even),
+.chip-row:nth-child(odd) .chip-cell:nth-child(odd) {
+  background-color: #FFE04E;
 }
