@@ -3,19 +3,71 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const session = require('express-session');
+const path = require('path');
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // replace with your frontend application's URL
+  credentials: true,
+}));
 app.use(bodyParser.json());
 app.use(express.json());
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://phung:Watacress1@phung.2yfqvwg.mongodb.net/CreditCardManager', { useNewUrlParser: true, useUnifiedTopology: true });
 
+
+// Initialize session middleware
+app.use(
+  session({
+    secret: 'your_secret',
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// To serve the static files from React app
+app.use(express.static(path.join(__dirname, './credit-card-manager-front/dist')));
+
+// Serve the index.html for all routes for React Router to take over
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './credit-card-manager-front/dist', 'index.html'));
+});
+
+
+
+// Your routes and middleware
+app.post('/phung/login', (req, res) => {
+  const { password } = req.body;
+  if (password === 'yourPasswordHere') {
+    req.session.loggedIn = true;
+    res.send('Logged in');
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+
+
+const isAuthenticated = (req, res, next) => {
+  if (req.session && req.session.loggedIn) {
+    next();
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+};
+
+
+// Use middleware in your routes
+app.get('/phung', isAuthenticated, (req, res) => {
+  res.send('Welcome, you are authenticated');
+});
+
 const CreditCardSchema = new mongoose.Schema({
   person: String, // new field
   name: String,
   balance: Number,
-  apr: Number
+  apr: Number,
+  cardColor: String
 });
 
 const CreditCard = mongoose.model('CreditCard', CreditCardSchema);
@@ -47,6 +99,7 @@ app.put('/:person/edit/:id', async (req, res) => {
   await CreditCard.findOneAndUpdate({ _id: req.params.id, person: req.params.person }, req.body);
   res.send('Card Updated');
 });
+
 
 // Delete a card for a person
 app.delete('/:person/delete/:id', async (req, res) => {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../index.css';
 // ... other imports
+import { ChromePicker } from 'react-color';  // import a color picker, you can install it via npm
 
 const PersonDashboard = () => {
   const { person } = useParams();  // Get the person from the URL
@@ -16,6 +17,8 @@ const PersonDashboard = () => {
   const [editApr, setEditApr] = useState('');
   const [paymentAmount, setPaymentAmount] = useState('');
   const [paymentLog, setPaymentLog] = useState({});
+  const [cardColor, setCardColor] = useState('#ffffff'); // new state for cardColor
+  const [editCardColor, setEditCardColor] = useState('#ffffff'); // default to white
 
 
   const calculateTotalInterestPaid = (balance, apr, paymentAmount, periods) => {
@@ -53,7 +56,8 @@ const PersonDashboard = () => {
       person,
       name: editName,
       balance: editBalance,
-      apr: editApr
+      apr: editApr,
+      cardColor: editCardColor  // include cardColor
     });
     setEditCardId(null);
     fetchCards();
@@ -106,6 +110,9 @@ const PersonDashboard = () => {
     return months;
   };
 
+  const handleColorChange = (color) => {
+    setCardColor(color.hex);
+  };
 
   return (
     <div className="container mx-2 p-4">
@@ -116,14 +123,28 @@ const PersonDashboard = () => {
        <div className="col"> <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} className="border p-2 mt-2 mb-4 mx-4 bg-white border-gray rounded text-black drop-shadow-xl" /></div>
        <div className="col"> <input type="text" placeholder="Balance" onChange={(e) => setBalance(e.target.value)} className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl" /></div>
        <div className="col"> <input type="text" placeholder="APR" onChange={(e) => setApr(e.target.value)} className="border p-2 m-2 my-4 bg-white border-gray rounded text-black drop-shadow-xl" /></div>
+       <div className="col"><input 
+          type="color" 
+          value={cardColor}
+          onChange={(e) => setCardColor(e.target.value)} 
+          className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl"
+        />
+        {/* <ChromePicker 
+            color={cardColor} 
+            onChange={handleColorChange}
+          /> */}
+          </div>
         <button onClick={addCard} className="btn btn-secondary rounded drop-shadow-xl mb-5">Add Card</button>
       </div>  
     </div>
     <hr/>
-<div className="container cards mx-auto">
-    <div className="row">
-  {cards.map((card) => (
-    <div key={card._id} className="card w-100 mx-auto glass mb-6 drop-shadow-lg border-gray">
+    <div className="container cards mx-auto">
+        <div className="row">
+          {cards.map((card) => (
+            <div 
+              key={card._id} 
+              className="card w-100 mx-auto glass mb-6 drop-shadow-lg border-gray" 
+              style={{backgroundColor: card.cardColor}}>
     <div className="card-body">
     <div className="credit-card-chip">
       <div className="chip-row">
