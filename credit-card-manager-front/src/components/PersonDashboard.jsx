@@ -142,17 +142,14 @@ const PersonDashboard = () => {
        <div className="col"> <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} className="border p-2 mt-2 mb-4 mx-4 bg-white border-gray rounded text-black drop-shadow-xl" /></div>
        <div className="col"> <input type="text" placeholder="Balance" onChange={(e) => setBalance(e.target.value)} className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl" /></div>
        <div className="col"> <input type="text" placeholder="APR" onChange={(e) => setApr(e.target.value)} className="border p-2 m-2 my-4 bg-white border-gray rounded text-black drop-shadow-xl" /></div>
-       <div className="col"><input 
+       <div className="col">
+        <p>Card Color</p><input 
           type="color" 
           value={cardColor}
           onChange={(e) => setCardColor(e.target.value)} 
-          className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl"
-        /></div>
-        {/* <ChromePicker 
-            color={cardColor} 
-            onChange={handleColorChange}
-          /> */}
-          
+          className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl" id="color-picker"/>
+          </div>
+        
         <button onClick={addCard} className="btn btn-secondary rounded drop-shadow-xl mb-5">Add Card</button>
       </div>  
     </div>
