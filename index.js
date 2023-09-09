@@ -7,10 +7,7 @@ const session = require('express-session');
 const path = require('path');
 
 // Middleware
-app.use(cors({
-  origin: 'https://notyoursandbox.com/', // replace with your frontend application's URL
-  credentials: true,
-}));
+app.use(cors());  // use CORS middleware
 app.use(bodyParser.json());
 app.use(express.json());
 // Connect to MongoDB
