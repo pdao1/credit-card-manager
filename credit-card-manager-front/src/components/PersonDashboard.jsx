@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../index.css';
@@ -38,10 +38,10 @@ const PersonDashboard = () => {
   
     return totalInterestPaid;
   };  
-  const fetchCards = async () => {
+  const fetchCards = useCallback(async () => {
     const response = await axios.get(`https://credit-card-manager-backend.onrender.com/${person}/cards`);
     setCards(response.data);
-  };
+  }, [person]);
   
   const addCard = async () => {
     await axios.post(`https://credit-card-manager-backend.onrender.com/${person}/add`, { person, name, balance, apr });
@@ -85,8 +85,8 @@ const PersonDashboard = () => {
   // Fetch cards when the component mounts or the person changes
   useEffect(() => {
     fetchCards();  // Call the existing function directly
-  }, [person, fetchCards]);  
-0
+  }, [fetchCards]);  // fetchCards is now the only dependency
+
   const calculatePayoffPeriods = (balance, apr, payment) => {
     let months = 0;
     let remainingBalance = balance;
