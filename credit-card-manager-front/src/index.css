@@ -1383,3 +1383,6 @@ li.cards {
 .glass {
   backdrop-filter: none!important;
 }
+.card.mx-auto.w-100.glass.mb-6.drop-shadow-lg.border-gray {
+  max-width: 720px;
+}
