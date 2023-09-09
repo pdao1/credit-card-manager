@@ -8,7 +8,7 @@ const path = require('path');
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000', // replace with your frontend application's URL
+  origin: 'http://notyoursandbox.com', // replace with your frontend application's URL
   credentials: true,
 }));
 app.use(bodyParser.json());

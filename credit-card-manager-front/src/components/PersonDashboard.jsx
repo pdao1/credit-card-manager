@@ -128,12 +128,12 @@ const PersonDashboard = () => {
           value={cardColor}
           onChange={(e) => setCardColor(e.target.value)} 
           className="border p-2 m-4 my-4 bg-white border-gray rounded text-black drop-shadow-xl"
-        />
+        /></div>
         {/* <ChromePicker 
             color={cardColor} 
             onChange={handleColorChange}
           /> */}
-          </div>
+          
         <button onClick={addCard} className="btn btn-secondary rounded drop-shadow-xl mb-5">Add Card</button>
       </div>  
     </div>
@@ -202,6 +202,18 @@ const PersonDashboard = () => {
   </div>
 ))}
 </div>
+   {/* Edit Form */}
+   {editCardId && (
+        <div>
+          <h2>Edit Card</h2>
+          <input type="text" placeholder="Name" onChange={(e) => setEditName(e.target.value)} className="border p-2 mr-2" />
+          <input type="text" placeholder="Balance" onChange={(e) => setEditBalance(e.target.value)} className="border p-2 mr-2" />
+          <input type="text" placeholder="APR" onChange={(e) => setEditApr(e.target.value)} className="border p-2 mr-2" />
+          <button onClick={editCard} className="bg-green-500 text-white p-2 rounded">Update</button>
+          <button onClick={() => setEditCardId(null)} className="bg-red-500 text-white p-2 rounded ml-2">Cancel</button>
+        </div>
+        
+      )}
 </div>
 
       {/* Display Payment Log */}
@@ -218,18 +230,7 @@ const PersonDashboard = () => {
           </div>
         ))}
       </div>
-      {/* Edit Form */}
-      {editCardId && (
-        <div>
-          <h2>Edit Card</h2>
-          <input type="text" placeholder="Name" onChange={(e) => setEditName(e.target.value)} className="border p-2 mr-2" />
-          <input type="text" placeholder="Balance" onChange={(e) => setEditBalance(e.target.value)} className="border p-2 mr-2" />
-          <input type="text" placeholder="APR" onChange={(e) => setEditApr(e.target.value)} className="border p-2 mr-2" />
-          <button onClick={editCard} className="bg-green-500 text-white p-2 rounded">Update</button>
-          <button onClick={() => setEditCardId(null)} className="bg-red-500 text-white p-2 rounded ml-2">Cancel</button>
-        </div>
-        
-      )}
+   
     </div>
 
 )}
