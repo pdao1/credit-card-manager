@@ -22,7 +22,7 @@ const MainPage = () => {
 
   return (
     <div className="container">
-      <p>Hit Generate Page to create a randomly-generated unique instance.  Be sure to SAVE the generated URL to return to manage your cards.</p>
+      <p className="pt-5 px-2">Hit Generate Page to create a randomly-generated unique instance.  Be sure to SAVE the generated URL to return to manage your cards.</p>
       <button className="btn btn-primary" id="generate-id" onClick={handleButtonClick}>Generate Page</button>
     </div>
   );
