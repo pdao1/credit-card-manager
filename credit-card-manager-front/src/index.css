@@ -1421,7 +1421,7 @@ li.cards {
 .chip-row:nth-child(odd) .chip-cell:nth-child(odd) {
   background-color: #FFE04E;
 }
-#card-color {
+#color-picker {
   height: 50px;
   width: 50px;
 }
