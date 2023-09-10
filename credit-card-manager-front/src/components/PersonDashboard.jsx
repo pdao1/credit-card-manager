@@ -110,7 +110,7 @@ const PersonDashboard = () => {
   };
   
   useEffect(() => {
-    if (person.length < 3) {  // Replace 3 with your desired minimum length
+    if (person.length < 8) {  // Replace 3 with your desired minimum length
       navigate('/404'); 
       // Redirect or handle this error case as you see fit
     }
