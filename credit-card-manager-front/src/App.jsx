@@ -9,14 +9,16 @@ import {
 
 import PersonDashboard from './components/PersonDashboard';  // Import this component from its file
 import MainPage from './components/MainPage';
+import ErrorPage from './components/ErrorPage';
 
 function App() {
   
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<MainPage />} />
+       <Route path="/" element={<MainPage />} />
         <Route path="/:person" element={<PersonDashboard />} />
+        <Route path="/404" element={<ErrorPage />} />
       </Routes>
     </Router>
   );

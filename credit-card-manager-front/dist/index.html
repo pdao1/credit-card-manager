@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Credit Card Calculator + Balance Tracker</title>
     
-    <script type="module" crossorigin src="/assets/index-ad4c6287.js"></script>
-    <link rel="stylesheet" href="/assets/index-676ae5c8.css">
+    <script type="module" crossorigin src="/assets/index-2d2b5cbf.js"></script>
+    <link rel="stylesheet" href="/assets/index-84484d34.css">
   </head>
   <body class="bg-white">
     <div class="min-h-full">
       <header class="bg-white shadow drop-shadow-lg p-4">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <h3 class="text-md font-bold tracking-tight text-gray-900">Credit Card Balance Tracker + Paydown Calculator</h3>
-          <sub>Enter card details and payment amount to calculate months needed to pay off the balance and total interest accrued.</sub>
+          <sub class="instructions">Enter card details and payment amount to calculate months needed to pay off the balance and total interest accrued.</sub>
         </div>
       </header>
       <main>
@@ -27,3 +27,11 @@
     </div>
   </body>
 </html>
+
+<script type="text/javascript">
+  let x = window.location.href
+  let y = x.split('/')
+  if(y.length == 4){
+    document.querySelector(".instructions").style.display = "none";
+  }
+</script>

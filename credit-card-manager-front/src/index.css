@@ -1426,5 +1426,6 @@ li.cards {
   width: 50px;
 }
 #generate-id {
-  margin-top: 30vh;
+  margin-top: 2vh;
+  margin-bottom: 6vh;
 }

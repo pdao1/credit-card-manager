@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+ 
 import '../index.css';
 // ... other imports
 
 const PersonDashboard = () => {
   const { person } = useParams();  // Get the person from the URL
+  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [name, setName] = useState('');
   const [balance, setBalance] = useState('');
@@ -107,6 +109,13 @@ const PersonDashboard = () => {
     }
   };
   
+  useEffect(() => {
+    if (person.length < 3) {  // Replace 3 with your desired minimum length
+      navigate('/404'); 
+      // Redirect or handle this error case as you see fit
+    }
+  }, [person]);  // Dependency on 'person' so it runs when 'person' changes
+
   // Fetch cards when the component mounts or the person changes
   useEffect(() => {
     fetchCards();  // Call the existing function directly

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
 
 const MainPage = () => {
   // Removed navigate to use window.location instead for external URLs
@@ -22,9 +22,18 @@ const MainPage = () => {
 
   return (
     <div className="container">
-      <sub className="pt-5 px-2">Hit the Generate button below to create a randomly-generated, unique instance ID. <br/>
-       <strong>IMPORTANT:</strong>Be sure to SAVE the generated URL to return to your saved instance to continue managing your cards.</sub>
-      <button className="btn btn-secondary" id="generate-id" onClick={handleButtonClick}>Generate a Unique Instance ID to Begin.</button>
+      <p className="py-4 px-4"><strong>Tap Generate below for a unique instance. </strong></p><br/>
+      <button className="btn btn-secondary" id="generate-id" onClick={handleButtonClick}>GENERATE Unique Instance ID</button><br/>
+      <hr/>
+      <p className="py-4 px-4">You may also choose your own instance ID. <br/><sub>Minimum 8 characters, alphanumeric.</sub></p>
+      <hr/>
+      <p className="py-4 px-4 text-sm">Decide on the ID, then append it like this: <br/>https://notyoursandbox.com/<strong>DebtsAndShit382</strong></p>
+      <p className="py-4 px-4 text-sm">Make it unique and unidentifiably linked to you. <br/>Instances are not indexed, crawled, or on sitemaps.</p>
+      <hr/>
+      <p className="py-4 px-4 text-sm">Only card nickname, amount, APR, card color, and uniqueID is stored.<strong> Payment logs/history do not get stored.</strong></p>
+      <hr/>
+      <p className="pt-4 mt-2 px-4"><strong>IMPORTANT</strong></p>
+      <p className="pt-2 mt-2 px-4 text-sm">Be sure to SAVE/BOOKMARK the generated URL on the next page to return to your saved instance & continue managing your cards.</p><br/>
     </div>
   );
 };
