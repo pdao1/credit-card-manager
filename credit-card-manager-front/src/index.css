@@ -37,7 +37,7 @@ html {
 
 /*
 1. Remove the margin in all browsers.
-2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+2. Inherit line-height from `html` so users can set them as a + directly on the `html` element.
 */
 
 body {
@@ -1420,4 +1420,8 @@ li.cards {
 .chip-row:nth-child(even) .chip-cell:nth-child(even),
 .chip-row:nth-child(odd) .chip-cell:nth-child(odd) {
   background-color: #FFE04E;
+}
+#card-color {
+  height: 50px;
+  width: 50px;
 }
